@@ -28,11 +28,12 @@ public class Teste {
 		char respostaFinal;
 		boolean on = true;
 		double valorParcelado = 0;
-		//Criar um historico de compras.
+		//IDEIA - Criar um historico de compras.
+		//Instâncias:
 		Estoque armazem = new Estoque(codigoProdutos, produtosEstoque, nomeProdutos, valorProdutos);
 		while(on) {
 			double valorTotal = 0;
-			double valorComImposto = 0;
+			//double valorComImposto = 0; -> O valor de etique dos produtos ja contem imposto.
 			totalComprasCar.clear();
 			armazem.precoCarrinho.clear();
 			armazem.qtdeCarrinho.clear();
@@ -43,8 +44,11 @@ public class Teste {
 					codigoProdutos.add(x + 1);
 					System.out.printf("%d\t\t%s\t\t     %d\t\t\t  R$%.2f\n", armazem.codigoProdutos.get(x), armazem.nomeProdutos.get(x), armazem.produtosEstoque.get(x), armazem.valorProdutos.get(x));
 				}
+				System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
+				System.out.println();
+				System.out.println();
 				while(loop) {
-					System.out.print("\nOlá! Digite o código do produto desejado: ");
+					System.out.print("Olá! Digite o código do produto desejado: ");
 					produtoSelecionado = leia.nextInt();
 					if(produtoSelecionado <= 0 || produtoSelecionado > 10)
 					{
@@ -83,34 +87,39 @@ public class Teste {
 				System.out.printf("%s \t\t %d \t\t\t\t %.2f \t\t\t\t %.2f\n", armazem.itensCarrinho.get(cont), armazem.qtdeCarrinho.get(cont), armazem.precoCarrinho.get(cont), totalComprasCar.get(cont));
 			}
 			for (double precoIndividual : totalComprasCar) {
-				valorTotal += precoIndividual;
-				//valorTotal = valorTotal + preco Individual;
+				//valorTotal += precoIndividual;
+				valorTotal = valorTotal + precoIndividual;
 			}
-			valorComImposto = (valorTotal + (valorTotal * 0.09));
-			System.out.printf("\nO valor total da compra com Imposto de 9%%: R$: %.2f", valorComImposto);
+			FormasPagamento pay = new FormasPagamento(valorTotal);
+			//valorComImposto = (valorTotal + (valorTotal * 0.09));  -> Ja embutido nos precos da etiqueta
+			System.out.printf("\nO valor total da compra com Imposto de 9%%: R$: %.2f", valorTotal);
 			System.out.println("\nOpções de Pagamento: ");
 			System.out.println("\n\t[1]À vista em dinheiro ou cheque, recebe 20% de desconto. \n\t[2]À vista no cartão de crédito, recebe 15% de desconto, \n\t[3]Em duas vezes, preço normal de etiqueta sem juros, \n\t[4]Em três vezes, preço normal de etiqueta mais juros de 10%\n");
 			while(true) {
 				System.out.print("\nQual seria a forma de pagamento?");
 				pagamento = leia.nextInt();
 				if(pagamento == 1) {
-					valorComImposto = valorComImposto - (valorComImposto * 0.20);
-					desconto = (valorComImposto * 0.20);
-					System.out.printf("Valor total da compra com desconto é: R$ %.2f", valorComImposto);
+					pay.pagamentoAvistaDinheiro();
+					//valorComImposto = valorComImposto - (valorComImposto * 0.20);
+					//desconto = (valorComImposto * 0.20);
+					System.out.printf("Valor total da compra com um desconto de 20%%(R$%.2f): R$ %.2f\n", pay.getDesconto(), pay.getValorFinal());
 					break;
 				}else if(pagamento == 2) {
-					valorComImposto = valorComImposto - (valorComImposto * 0.15);
-					desconto = (valorComImposto * 0.15);
-					System.out.printf("Valor total da compra com desconto é: R$ %.2f", valorComImposto);
+					pay.pagamentoAvistaCartao();
+					//valorComImposto = valorComImposto - (valorComImposto * 0.15);
+					//desconto = (valorComImposto * 0.15);
+					//System.out.printf("Valor total da compra com desconto é: R$ %.2f", valorComImposto);
 					break;
 				}else if (pagamento == 3) {
-					valorParcelado = valorComImposto / 2;
-					System.out.printf("Valor de cada uma das 2 parcelas: R$ %.2f ", valorParcelado);
+					pay.pagamentoCartao2x();
+					valorParcelado = valorTotal / 2;
+					//System.out.printf("Valor de cada uma das 2 parcelas: R$ %.2f ", valorParcelado);
 					break;
 				} else if (pagamento == 4) {
-					juros = valorComImposto * 0.10;
-					valorComImposto += juros;
-					valorParcelado = valorComImposto / 3;
+					//pay.pagamentoCartao3x();
+					juros = valorTotal * 0.10;
+					valorTotal += juros;
+					valorParcelado = valorTotal / 3;
 					System.out.printf("Valor de cada uma das 3 parcela é: R$ %.2f ", valorParcelado);
 					break;
 				}
@@ -120,7 +129,7 @@ public class Teste {
 			for(int x = 0;x <= 100; x++) {
 				System.out.println();
 			}
-			tributos = valorComImposto * .09;
+			tributos = valorTotal * .09;
 			System.out.println("GENERATIONS STORE");
 			System.out.println("Rua do Bôbo, nº0 - Mercadinho - LTDA");
 			System.out.println("CNPJ: 1234554321-00");
@@ -129,19 +138,19 @@ public class Teste {
 			System.out.println("\nPRODUTO\t\tQTND. PRODUTOS\t\tPREÇO UNIT.\t\t  PREÇO TOTAL\n");
 			for(int x = 0; x < armazem.qtdeCarrinho.size(); x++) {
 				System.out.printf("%s\t\t    %d\t\t\t  R$%.2f\t\t    R$%.2f\n", armazem.itensCarrinho.get(x), armazem.qtdeCarrinho.get(x), armazem.precoCarrinho.get(x), totalComprasCar.get(x));
-				System.out.println("=============================================================================================");
+				System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
 			}
 			System.out.println("\n\n");
 			if (pagamento == 1 || pagamento == 2) {
 				System.out.printf("DESCONTO NA COMPRA: R$%.2f\n", desconto);
-				System.out.printf("VALOR TOTAL A SER PAGO:R$%.2f\n", valorComImposto);
+				System.out.printf("VALOR TOTAL A SER PAGO:R$%.2f\n", valorTotal);
 			}else if(pagamento == 3) {
 				System.out.printf("VALOR PRA CADA UMA DAS 2 PARCELAS: R$%.2f\n", valorParcelado);
-				System.out.printf("VALOR TOTAL: R$%.2f\n", valorComImposto);
+				System.out.printf("VALOR TOTAL: R$%.2f\n", valorTotal);
 			}
 			else if (pagamento == 4) {
 				System.out.printf("JUROS COBRADO: R$%.2f\n", juros);
-				System.out.printf("VALOR TOTAL: R$%.2f\n", valorComImposto);
+				System.out.printf("VALOR TOTAL: R$%.2f\n", valorTotal);
 				System.out.printf("VALOR PRA CADA UMA DAS 3 PARCELAS: R$%.2f\n", valorParcelado);
 			}
 			System.out.printf("VALOR TRIBUTÁRIO: R$%.2f\n", tributos);
@@ -171,7 +180,7 @@ public class Teste {
 	}
 	public static void fachada() {
 		System.out.println("\t\t\tGENERATIONS STORE");
-		System.out.println("==================================================================");
+		System.out.println("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
 		System.out.println("\nCÓDIGO\t\tPRODUTO\t\tQTND. PRODUTOS\t\tPREÇO UNIT.\t\t\n");
 	}
 }

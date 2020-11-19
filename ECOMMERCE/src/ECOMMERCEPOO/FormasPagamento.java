@@ -1,82 +1,98 @@
 package ECOMMERCEPOO;
 
 public class FormasPagamento {
-	
-	private int vista = 1;
-	private int vistaC = 2;
-	private int parcelado2 = 3;
-	private int parcelado3 = 4;
-	private double totalCompras = 0;
-	private int formasPag = 0;
-	
-	
-	
-	
-	
-	public int getVista() {
-		return vista;
+//	private double valor;
+	private double parcelas;
+	private double valorFinal;
+	private int parc = 0;
+	private double desconto;
+	private double juros;
+	public FormasPagamento(double valorFinal) {
+		this.valorFinal = valorFinal;
 	}
-	public void setVista(int vista) {
-		this.vista = vista;
+	public double getDesconto() {
+		return desconto;
 	}
-	public int getVistaC() {
-		return vistaC;
+	public void setDesconto(double desconto) {
+		this.desconto = desconto;
 	}
-	public void setVistaC(int vistaC) {
-		this.vistaC = vistaC;
+	public int getParc() {
+		return parc;
 	}
-	public int getParcelado2() {
-		return parcelado2;
+	public void setParc(int parc) {
+		this.parc = parc;
 	}
-	public void setParcelado2(int parcelado2) {
-		this.parcelado2 = parcelado2;
+	public double getParcelas() {
+		return parcelas;
 	}
-	public int getParcelado3() {
-		return parcelado3;
+	public void setParcelas(double parcelas) {
+		this.parcelas = parcelas;
 	}
-	public void setParcelado3(int parcelado3) {
-		this.parcelado3 = parcelado3;
+	public double getValorFinal() {
+		return valorFinal;
 	}
-	
-	
-	public void FormasPagamentos() {
-		if(formasPag == 1) {
-			totalCompras = (totalCompras - (totalCompras * 0.20));
-			System.out.println("O valor total da compra com 20% de desconto: "+ totalCompras);
-		}else if(formasPag == 2) {
-			totalCompras = (totalCompras - (totalCompras * 0.15 ));
-			System.out.println("O valor total de compra com 15% de desconto: "+totalCompras);
-		}else if(formasPag == 3) {
-			totalCompras = totalCompras / 2;
-			System.out.println("O valor de cada parcela é de: "+ totalCompras);
-		}else if(formasPag == 4) {
-			totalCompras = totalCompras + (totalCompras * 0.10) / 3;
-			System.out.println("O total das parcelas com mais 10% de juros é: " + totalCompras );
-		}else {
-			System.out.println("Opção Invalida.");
+	public void setValorFinal(double valorFinal) {
+		this.valorFinal = valorFinal;
+	}
+	public void pagamentoAvistaDinheiro()
+	{
+		this.valorFinal = this.valorFinal - (this.valorFinal*0.20);
+		this.desconto = (this.valorFinal * 0.20);
+		System.out.printf("Valor total da compra com um desconto de 20%%(R$%.2f): R$ %.2f\n", this.desconto, this.valorFinal);
+	}
+	public void pagamentoAvistaCartao()
+	{
+		this.valorFinal = this.valorFinal - (this.valorFinal*0.15);
+		this.desconto = (this.valorFinal * 0.15);
+		System.out.printf("Valor total da compra com um desconto de 15%%(R$%.2f): R$ %.2f\n", this.desconto, this.valorFinal);
+	}
+	public void pagamentoCartao2x ()
+	{	
+		//this.valorFinal = this.getValorFinal();
+		this.parcelas = this.valorFinal / 2;
+		this.parc ++;
+		System.out.printf("Valor total da compra: R$ %.2f\n", this.getValorFinal());
+		System.out.printf("Valor individual de cada parcela: R$ %.2f\n", this.parcelas);
+	}
+	public void pagamentoCartao3x ()
+	{
+		this.juros = this.valorFinal * .10;
+		this.valorFinal = this.valorFinal + juros;
+		this.parcelas = (this.valorFinal / 3);
+		this.parc += 2;
+		System.out.printf("Valor total da compra com o juros de 10%%(R$%.2f): R$ %.2f\n", this.juros, this.valorFinal);
+		System.out.printf("Valor individual de cada parcela: R$ %.2f\n", this.parcelas);
+	}
+	/*public void notaFiscal1 () 
+	{
+		System.out.println("\n\n\n\n\n\t\t\t\t\t\t\t\tNOTA FISCAL\n");
+		System.out.println("\nGENERATIONS STORE");
+		System.out.println("PRODUTOS:\t"+"VALOR:\t\tQUANTIDADE:\n");
+		// carrinho		
+	}
+	public void notaFiscal2 ()
+	{
+		double impostos;
+		impostos = this.valorFinal*0.09;
+		System.out.printf("\nIMPOSTOS A SEREM PAGOS R$ %.2f",impostos,"\n\n");
+		if (this.parc == 1)
+		{ 
+			System.out.printf("\n\nTOTAL A SER PAGO = R$ %.2f\n",this.valorFinal);
+			System.out.printf("\nPARCELADO EM 2X DE R$ %.2f" ,this.parcelas,"\n\n");
 		}
+		else if (parc == 2)
+		{ 
+			System.out.printf("\n\nTOTAL A SER PAGO = R$ %.2f\n",this.valorFinal);
+			System.out.printf("\nPARCELADO EM 3X DE R$ %.2f" ,this.parcelas,"\n\n");
+		}
+		else
+		{
+			System.out.printf("\n\nTOTAL A SER PAGO = R$ %.2f\n",this.valorFinal);
+		}
+		System.out.print("\n\nOBRIGADO E VOLTE SEMPRE-\n");
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
+	public void valorFinal(double valor) {
+		this.valorFinal += valor;
+	}
+	*/
 }
